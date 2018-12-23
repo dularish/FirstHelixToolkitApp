@@ -10,26 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MyFirstHelixToolkitAppToPlayAround
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ObjectInteractionWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ObjectInteractionWindow : Window
     {
-        public MainWindow()
+        public ObjectInteractionWindow()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddTriangleToGeometryModel_Click(object sender, RoutedEventArgs e)
         {
-            ObjectInteractionWindow nextWindow = new ObjectInteractionWindow();
-            this.Close();
-            nextWindow.Show();
+            this.AddTriangleToGeometryModel.IsEnabled = false;
         }
     }
 }
