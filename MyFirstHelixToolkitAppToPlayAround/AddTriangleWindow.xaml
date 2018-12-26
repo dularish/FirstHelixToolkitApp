@@ -1,0 +1,51 @@
+﻿<Window x:Class="MyFirstHelixToolkitAppToPlayAround.AddTriangleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyFirstHelixToolkitAppToPlayAround"
+        mc:Ignorable="d"
+        Title="AddTriangleWindow" Height="200" Width="400" Closed="Window_Closed">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Center">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label>Triangle Name :</Label>
+                    <TextBox Width="100" Text="{Binding Path=TriangleName , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10,10">
+                    <TextBlock FontSize="9" FontStyle="Italic">Please make sure that you specify coordinates in Counter-Clockwise direction</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Vertex 1 :</Label>
+                    <TextBox Width="100" Text="{Binding Path=Vertex1Point.X , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex1Point.Y , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex1Point.Z , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal">
+                    <Label>Vertex 2 :</Label>
+                    <TextBox Width="100" Text="{Binding Path=Vertex2Point.X , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex2Point.Y , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex2Point.Z , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label>Vertex 3 :</Label>
+                    <TextBox Width="100" Text="{Binding Path=Vertex3Point.X , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex3Point.Y , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" Text="{Binding Path=Vertex3Point.Z , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="AddTriangleBtn" Content="Add Triangle" Click="AddTriangleBtn_Click"></Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        
+    </Grid>
+</Window>

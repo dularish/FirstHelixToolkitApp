@@ -27,7 +27,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ObjectInteractionWindow nextWindow = new ObjectInteractionWindow();
+            HelixTKObjectInteractionWindow nextWindow = new HelixTKObjectInteractionWindow();
             this.Close();
             nextWindow.Show();
         }
