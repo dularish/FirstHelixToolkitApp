@@ -46,11 +46,16 @@
                 <TextBlock>Press the below Button to add a triangle</TextBlock>
                 <Button x:Name="AddTriangleToGeometryModelBtn" Click="AddTriangleToGeometryModel_Click">Add Triangle</Button>
             </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <TextBlock>Press the below Button to add a Model File</TextBlock>
+                <Button x:Name="AddModelFileBtn" Click="AddModelFileBtn_Click" >Add Model File</Button>
+            </StackPanel>
         </StackPanel>
 
         <HelixToolKit:HelixViewport3D ZoomExtentsWhenLoaded="True" Grid.Column="2" Grid.RowSpan="3" BorderThickness="3" BorderBrush="Black" MouseMove="HelixViewport3D_MouseMove">
             <HelixToolKit:SunLight />
-            <ModelVisual3D>
+            <ModelVisual3D x:Name="modelVisual3dRef">
                 <ModelVisual3D.Content>
                     <GeometryModel3D x:Name="geometryModel3dRef">
                         <GeometryModel3D.Geometry>

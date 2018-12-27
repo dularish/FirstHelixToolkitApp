@@ -1,7 +1,9 @@
 ﻿using HelixToolkit.Wpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -90,9 +92,21 @@ namespace MyFirstHelixToolkitAppToPlayAround
 
             if (result != null)
             {
-                if (result.VisualHit !=null && result.VisualHit.GetType() == typeof(ModelVisual3D) && ((GeometryModel3D)((ModelVisual3D)result.VisualHit).Content).Geometry.GetName() == (testName + "Geometry"))
+                if (result.VisualHit !=null && result.VisualHit.GetType() == typeof(ModelVisual3D))
                 {
-                    modelUI.IsGeometryHit = true;
+                    Type typeOfContent = ((ModelVisual3D)result.VisualHit).Content.GetType();
+                    if (typeOfContent == typeof(GeometryModel3D) && ((GeometryModel3D)((ModelVisual3D)result.VisualHit).Content).Geometry.GetName() == (testName + "Geometry"))
+                    {
+                        modelUI.IsGeometryHit = true;
+                    }
+                    else if(typeOfContent == typeof(Model3DGroup))
+                    {
+                        modelUI.IsGeometryHit = false;
+                    }
+                    else
+                    {
+                        modelUI.IsGeometryHit = false;
+                    }
                 }
                 else
                 {
@@ -161,6 +175,48 @@ namespace MyFirstHelixToolkitAppToPlayAround
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void AddModelFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            //openFileDialog.InitialDirectory = "D:\\";
+            //Have found out by trial that .stl, .3ds, .obj 3d files get rendered correctly
+            openFileDialog.Filter = "Supported 3d files(*.stl,*.3ds,*.obj)|*.stl;*.3ds;*.obj|All Files(*.*)|*.*";
+            openFileDialog.FilterIndex = 0;
+
+            openFileDialog.ShowDialog();
+
+            string filePath = openFileDialog.FileName;
+
+            if(filePath != null && File.Exists(filePath))
+            {
+                modelVisual3dRef.Content = Get3DModelFromFilePath(filePath);
+            }
+        }
+
+        /// <summary>
+        /// Gets Model3D object from a physical file
+        /// throws exception if unsupported fileFormat file is provided as input
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private Model3D Get3DModelFromFilePath(string filePath)
+        {
+            Model3D modelToReturn = null;
+            try
+            {
+                ModelImporter importer = new ModelImporter();
+
+                modelToReturn = importer.Load(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exception caught : " + ex.Message);
+            }
+
+            return modelToReturn;
         }
     }
 }
