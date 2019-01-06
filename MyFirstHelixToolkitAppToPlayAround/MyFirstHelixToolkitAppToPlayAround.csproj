@@ -75,6 +75,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HelixTKObjectInteractionWindowViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -88,6 +89,7 @@
     <Compile Include="HelixTKObjectInteractionWindow.xaml.cs">
       <DependentUpon>HelixTKObjectInteractionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model3DTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

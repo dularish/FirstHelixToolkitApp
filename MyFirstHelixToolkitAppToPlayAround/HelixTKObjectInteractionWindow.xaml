@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyFirstHelixToolkitAppToPlayAround"
         xmlns:HelixToolKit="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="ObjectInteractionWindow" Height="450" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="HelixTKObjectInteractionWindow" Height="600" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
@@ -33,13 +33,40 @@
                     <TextBlock>Current Y coordinate :</TextBlock>
                     <TextBlock Width="100" Text="{Binding Path=YCoord , StringFormat=N2}"></TextBlock>
                 </StackPanel>
-                
-                
+
+
             </StackPanel>
 
-            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                <TextBlock>Geometry Hit Status : </TextBlock>
-                <TextBlock Text="{Binding IsGeometryHit}"></TextBlock>
+            <StackPanel Margin="0 10 0 0" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Geometry Hit Status :</TextBlock>
+                    <TextBlock Text="{Binding IsGeometryHit}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Model Hit Name :</TextBlock>
+                    <TextBlock Text="{Binding ModelHitName}"></TextBlock>
+                </StackPanel>
+                
+                <StackPanel.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsGeometryHit}" Value="false">
+                                <Setter Property="StackPanel.Visibility" Value="Hidden" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsGeometryHit}" Value="true">
+                                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+            </StackPanel>
+
+            <StackPanel Margin="0 10 0 0" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Active Model in Selection :</TextBlock>
+                    <TextBlock Text="{Binding ActiveModel3DName}"></TextBlock>
+                </StackPanel>
+
             </StackPanel>
 
             <StackPanel Margin="0 10 0 0">
@@ -51,28 +78,78 @@
                 <TextBlock>Press the below Button to add a Model File</TextBlock>
                 <Button x:Name="AddModelFileBtn" Click="AddModelFileBtn_Click" >Add Model File</Button>
             </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <Button x:Name="Rotate90DegCCWBtn" Click="Rotate90DegCCWBtn_Click" >Rotate 90 deg CCW</Button>
+            </StackPanel>
+            <StackPanel Margin="0 10 0 0">
+                <TextBlock>Rotation by X Axis :</TextBlock>
+                <Slider Value="{Binding Path = ActiveModel3DTransformation.RotationAngleByXAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="360" TickFrequency="90" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Name="SliderRotX" ValueChanged="SliderRotX_ValueChanged"></Slider>
+
+                <TextBlock>Rotation by Y Axis :</TextBlock>
+                <Slider Value="{Binding Path = ActiveModel3DTransformation.RotationAngleByYAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="360" TickFrequency="90" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Name="SliderRotY" ValueChanged="SliderRotY_ValueChanged"></Slider>
+
+                <TextBlock>Rotation by Z Axis :</TextBlock>
+                <Slider Value="{Binding Path = ActiveModel3DTransformation.RotationAngleByZAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="360" TickFrequency="90" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Name="SliderRotZ" ValueChanged="SliderRotZ_ValueChanged"></Slider>
+            </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <TextBlock>Translation in X direction :</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Width="200" Margin="10" Text="{Binding Path= ActiveModel3DTransformation.TranslationX , Mode=TwoWay, StringFormat=N2 , UpdateSourceTrigger=PropertyChanged}" Name="TextBoxTranslationX" TextChanged="TextBoxTranslationX_TextChanged" MouseWheel="TextBoxTranslationX_MouseWheel" ></TextBox>
+                    <StackPanel Orientation="Vertical">
+                        <Button Name="UpTranslationXBtn" Click="UpTranslationXBtn_Click">^</Button>
+                        <Button Name="DownTranslationXBtn" Click="DownTranslationXBtn_Click">v</Button>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock>Translation in Y direction :</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Width="200" Margin="10" Text="{Binding Path= ActiveModel3DTransformation.TranslationY , Mode=TwoWay, StringFormat=N2 , UpdateSourceTrigger=PropertyChanged}" Name="TextBoxTranslationY" TextChanged="TextBoxTranslationY_TextChanged" MouseWheel="TextBoxTranslationY_MouseWheel"></TextBox>
+                    <StackPanel Orientation="Vertical">
+                        <Button Name="UpTranslationYBtn" Click="UpTranslationYBtn_Click">^</Button>
+                        <Button Name="DownTranslationYBtn" Click="DownTranslationYBtn_Click">v</Button>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock>Translation in Z direction :</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Width="200" Margin="10" Text="{Binding Path= ActiveModel3DTransformation.TranslationZ , Mode=TwoWay, StringFormat=N2 , UpdateSourceTrigger=PropertyChanged}" Name="TextBoxTranslationZ" TextChanged="TextBoxTranslationZ_TextChanged" MouseWheel="TextBoxTranslationZ_MouseWheel"></TextBox>
+                    <StackPanel Orientation="Vertical">
+                        <Button Name="UpTranslationZBtn" Click="UpTranslationZBtn_Click">^</Button>
+                        <Button Name="DownTranslationZBtn" Click="DownTranslationZBtn_Click">v</Button>
+                    </StackPanel>
+                </StackPanel>
+                
+                
+            </StackPanel>
+
+            <StackPanel>
+                <Button Name="ComputationButton" Click="ComputationButton_Click">Just compute</Button>
+            </StackPanel>
+
         </StackPanel>
 
-        <HelixToolKit:HelixViewport3D ZoomExtentsWhenLoaded="True" Grid.Column="2" Grid.RowSpan="3" BorderThickness="3" BorderBrush="Black" MouseMove="HelixViewport3D_MouseMove">
+        <HelixToolKit:HelixViewport3D ZoomExtentsWhenLoaded="True" Grid.Column="2" Grid.RowSpan="3" BorderThickness="3" BorderBrush="Black" MouseMove="HelixViewport3D_MouseMove" MouseDown="HelixViewport3D_MouseDown">
             <HelixToolKit:SunLight />
             <ModelVisual3D x:Name="modelVisual3dRef">
                 <ModelVisual3D.Content>
-                    <GeometryModel3D x:Name="geometryModel3dRef">
-                        <GeometryModel3D.Geometry>
-                            <MeshGeometry3D x:Name="meshMain"
+                    <Model3DGroup>
+                        <GeometryModel3D x:Name="geometryModel3dRef">
+                            <GeometryModel3D.Geometry>
+                                <MeshGeometry3D x:Name="meshMain"
                                             Positions="0 0 0  1 0 0  0 1 0  1 1 0  0 0 1  1 0 1  0 1 1  1 1 1"
                                             TriangleIndices="3 2 1">
 
-                            </MeshGeometry3D>
-                        </GeometryModel3D.Geometry>
-                        <GeometryModel3D.Material>
-                            <DiffuseMaterial x:Name="matDiffuseMain">
-                                <DiffuseMaterial.Brush>
-                                    <SolidColorBrush Color="Red" />
-                                </DiffuseMaterial.Brush>
-                            </DiffuseMaterial>
-                        </GeometryModel3D.Material>
-                    </GeometryModel3D>
+                                </MeshGeometry3D>
+                            </GeometryModel3D.Geometry>
+                            <GeometryModel3D.Material>
+                                <DiffuseMaterial x:Name="matDiffuseMain">
+                                    <DiffuseMaterial.Brush>
+                                        <SolidColorBrush Color="Red" />
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                            </GeometryModel3D.Material>
+                        </GeometryModel3D>
+                    </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
             <HelixToolKit:GridLinesVisual3D Width="8" Length="8" MinorDistance="1" MajorDistance="1" Thickness="0.01" />
