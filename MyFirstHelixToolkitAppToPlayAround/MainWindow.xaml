@@ -18,6 +18,11 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock>Welcome to my first application</TextBlock>
-        <Button Grid.Column="1" Grid.Row="1" Click="Button_Click" >Click to navigate to next screen</Button>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+            <Button x:Name="ModelsView" Margin="10" Click="Button_Click" >Click to navigate to 3D Viewer</Button>
+
+            <Button x:Name="ChartsView" Margin="10" Click="ChartsView_Click" >Click to navigate to Charts Viewer</Button>
+        </StackPanel>
+        
     </Grid>
 </Window>

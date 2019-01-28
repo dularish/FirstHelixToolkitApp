@@ -31,5 +31,12 @@ namespace MyFirstHelixToolkitAppToPlayAround
             this.Close();
             nextWindow.Show();
         }
+
+        private void ChartsView_Click(object sender, RoutedEventArgs e)
+        {
+            ChartsDisplayWindow chartsDisplayWindow = new ChartsDisplayWindow();
+            this.Close();
+            chartsDisplayWindow.Show();
+        }
     }
 }
