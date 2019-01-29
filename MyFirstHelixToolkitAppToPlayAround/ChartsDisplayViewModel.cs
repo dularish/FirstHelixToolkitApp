@@ -17,6 +17,11 @@ namespace MyFirstHelixToolkitAppToPlayAround
         private Dictionary<string, Func<double, double>> _Functions;
         private List<string> _FunctionKeys;
         private string _FunctionSelected;
+        private int _XDomainMin;
+        private int _XDomainMax;
+        private double _YDomainMin;
+        private double _YDomainMax;
+        
 
         public PlotModel ModelPlot
         {
@@ -34,6 +39,8 @@ namespace MyFirstHelixToolkitAppToPlayAround
             {
                 _FunctionKeys = value;
                 NotifyPropertyChanged();
+                FunctionSelected = FunctionKeys[0];
+                
             }
         }
 
@@ -44,6 +51,48 @@ namespace MyFirstHelixToolkitAppToPlayAround
                 _FunctionSelected = value;
 
                 NotifyPropertyChanged();
+                RedrawCurveForModelPlot();
+            }
+        }
+
+        public int XDomainMin
+        {
+            get => _XDomainMin; set
+            {
+                _XDomainMin = value;
+
+                NotifyPropertyChanged();
+                RedrawCurveForModelPlot();
+            }
+        }
+        public int XDomainMax
+        {
+            get => _XDomainMax; set
+            {
+                _XDomainMax = value;
+
+                NotifyPropertyChanged();
+                RedrawCurveForModelPlot();
+            }
+        }
+        public double YDomainMin
+        {
+            get => _YDomainMin; set
+            {
+                _YDomainMin = value;
+
+                NotifyPropertyChanged();
+                RedrawCurveForModelPlot();
+            }
+        }
+        public double YDomainMax
+        {
+            get => _YDomainMax; set
+            {
+                _YDomainMax = value;
+
+                NotifyPropertyChanged();
+                RedrawCurveForModelPlot();
             }
         }
 
@@ -57,16 +106,31 @@ namespace MyFirstHelixToolkitAppToPlayAround
         public ChartsDisplayViewModel()
         {
             InitializeFunctions();
+            FunctionSelected = FunctionKeys[0];
 
-            string curveName = "Sin";
+            XDomainMin = 0;
+            XDomainMax = 360;
+            YDomainMin = -2;
+            YDomainMax = 2;
+            
 
-            PlotModel modelPlot = new PlotModel{ Title = "Line plot", Subtitle = curveName + " Curve" };
+            RedrawCurveForModelPlot();
+        }
+
+        private void RedrawCurveForModelPlot()
+        {
+            if (!_Functions.Keys.Contains(FunctionSelected))
+            {
+                throw new Exception("Curve not found");
+            }
+
+            PlotModel modelPlot = new PlotModel { Title = "Line plot", Subtitle = FunctionSelected + " Curve" };
 
 
             LineSeries series = new LineSeries
             {
                 StrokeThickness = 1,
-                Color = OxyColor.FromRgb(255,0, 0)
+                Color = OxyColor.FromRgb(255, 0, 0)
                 //MarkerSize = 3,
                 //MarkerStroke = OxyColors.ForestGreen,
                 //MarkerType = MarkerType.Plus
@@ -75,18 +139,22 @@ namespace MyFirstHelixToolkitAppToPlayAround
             double totalDataNumbers = 0;
             double average = 0;
             List<DataPoint> dataPoints = new List<DataPoint>();
-            for (int i = 0; i < 360; i++)
+            for (int i = XDomainMin; i < XDomainMax; i++)
             {
-                double dataValue = Functions[curveName](i);
+                double dataValue = Functions[FunctionSelected](i);
 
-                dataPoints.Add(new DataPoint(i, dataValue));
+                if(dataValue > YDomainMin && dataValue < YDomainMax)
+                {
+                    dataPoints.Add(new DataPoint(i, dataValue));
 
-                totalDataValue += dataValue;
-                totalDataNumbers++;
+                    totalDataValue += dataValue;
+                    totalDataNumbers++;
+                }
+                
             }
             average = totalDataValue / totalDataNumbers;
 
-            
+
 
             //dataPoints = dataPoints.Where(s => s.Y < 2 * average).ToList();
 
@@ -107,6 +175,9 @@ namespace MyFirstHelixToolkitAppToPlayAround
             _Functions.Add("Sin", (double i) => Math.Sin(i * Math.PI / 180));
             _Functions.Add("Cos", (double i) => Math.Cos(i * Math.PI / 180));
             _Functions.Add("Tan", (double i) => Math.Tan(i * Math.PI / 180));
+            _Functions.Add("Log", (double i) => Math.Log10(i));
+            _Functions.Add("Linear", (double i) => (i * 0.15 + 0.25));
+            _Functions.Add("Exp", (double i) => Math.Exp(i)/100000);
 
             _FunctionKeys = _Functions.Keys.ToList();
         }

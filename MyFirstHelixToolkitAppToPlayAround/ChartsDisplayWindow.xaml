@@ -26,7 +26,23 @@
 
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Orientation="Vertical">
             <StackPanel>
-                <ComboBox x:Name="CurveSelector" ItemsSource="{Binding FunctionKeys}" SelectedItem="{Binding FunctionSelected}" Margin="10,20,10,20"></ComboBox>
+                <TextBlock VerticalAlignment="Center" Margin="10,10,10,5">Select the curve to plot :</TextBlock>
+                <ComboBox x:Name="CurveSelector" ItemsSource="{Binding FunctionKeys}" SelectedItem="{Binding FunctionSelected}" Margin="10,5,10,10"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                    <TextBlock VerticalAlignment="Center">X Min :</TextBlock>
+                    <TextBox x:Name="XDomainMin" Margin="10" Width="50" Text="{Binding XDomainMin}"></TextBox>
+                    <TextBlock VerticalAlignment="Center">X Max :</TextBlock>
+                    <TextBox x:Name="XDomainMax" Margin="10" Width="50" Text="{Binding XDomainMax}"></TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                    <TextBlock VerticalAlignment="Center">Y Min :</TextBlock>
+                    <TextBox x:Name="YDomainMin" Margin="10" Width="50" Text="{Binding YDomainMin}"></TextBox>
+                    <TextBlock VerticalAlignment="Center">Y Max :</TextBlock>
+                    <TextBox x:Name="YDomainMax" Margin="10" Width="50" Text="{Binding YDomainMax}"></TextBox>
+                </StackPanel>
+
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -27,5 +27,6 @@ namespace MyFirstHelixToolkitAppToPlayAround
             this.DataContext = modelUI;
 
         }
+        
     }
 }
