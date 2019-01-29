@@ -18,7 +18,9 @@ namespace MyFirstHelixToolkitAppToPlayAround
         private string modelHitName;
         private GeometryModel3D geometryModel3DHit;
         private Material materialInfoBackedUpForGeometryModel3DHit;
-        
+        private string inputFilePath = @"D:\Dularish\Job-2.inp";
+
+
         private Model3DGroup basemodel3DGroup;
         private Model3D activeModel3D;
         private string activeModel3DName;
@@ -192,6 +194,15 @@ namespace MyFirstHelixToolkitAppToPlayAround
                 }
 
                 ActiveModel3DTransformation = model3DTransformationDataMap[activeModel3D];
+            }
+        }
+
+        public string InputFilePath
+        {
+            get => inputFilePath; set
+            {
+                inputFilePath = value;
+                NotifyPropertyChanged();
             }
         }
 

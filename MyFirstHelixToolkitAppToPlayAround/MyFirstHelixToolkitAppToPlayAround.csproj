@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AbaqusInpFileParser.cs" />
     <Compile Include="AddTriangleWindow.xaml.cs">
       <DependentUpon>AddTriangleWindow.xaml</DependentUpon>
     </Compile>

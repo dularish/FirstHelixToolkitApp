@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Wpf;
 using Microsoft.Win32;
+using MyFirstHelixToolkitAppToPlayAround.MyCustomModulesInAmbigai;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,8 @@ namespace MyFirstHelixToolkitAppToPlayAround
     public partial class HelixTKObjectInteractionWindow : Window
     {
         HelixTKObjectInteractionWindowViewModel modelUI;
+        private static readonly object _threadLockObject = new object();
+        private static readonly object _threadLockObjectForEachPart = new object();
 
         public HelixTKObjectInteractionWindow()
         {
@@ -51,27 +54,37 @@ namespace MyFirstHelixToolkitAppToPlayAround
             if(triangleToAdd != null)
             {
                 //Since we may return null object from inner Window
-                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex1Point);
-                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex2Point);
-                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex3Point);
+                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex1Point, geometryModel3dRef);
+                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex2Point, geometryModel3dRef);
+                ExtractVertexIndexAndAddToExistingMesh(triangleToAdd.Vertex3Point, geometryModel3dRef);
             }
 
             this.AddTriangleToGeometryModelBtn.IsEnabled = true;
         }
 
-        private void ExtractVertexIndexAndAddToExistingMesh(Point3DClassType pointToAdd)
+        private void ExtractVertexIndexAndAddToExistingMesh(Point3DClassType pointToAdd, GeometryModel3D geometryModel)
         {
-            List<Point3D> listOfVertex1MatchingPoints = meshMain.Positions.Where((s) => s.X == pointToAdd.X && s.Y == pointToAdd.Y && s.Z == pointToAdd.Z).ToList();
+            if (geometryModel.Geometry == null)
+            {
+                geometryModel.Geometry = new MeshGeometry3D();
+            }
+
+            List<Point3D> listOfVertex1MatchingPoints = (geometryModel.Geometry as MeshGeometry3D).Positions.Where((s) => s.X == pointToAdd.X && s.Y == pointToAdd.Y && s.Z == pointToAdd.Z).ToList();
 
             if (listOfVertex1MatchingPoints.Count > 0)
             {
-                meshMain.TriangleIndices.Add(meshMain.Positions.IndexOf(listOfVertex1MatchingPoints[0]));
+                (geometryModel.Geometry as MeshGeometry3D).TriangleIndices.Add((geometryModel.Geometry as MeshGeometry3D).Positions.IndexOf(listOfVertex1MatchingPoints[0]));
             }
             else
             {
-                meshMain.Positions.Add(new Point3D(pointToAdd.X, pointToAdd.Y, pointToAdd.Z));
-                meshMain.TriangleIndices.Add(meshMain.Positions.Count - 1);
+                (geometryModel.Geometry as MeshGeometry3D).Positions.Add(new Point3D(pointToAdd.X, pointToAdd.Y, pointToAdd.Z));
+                (geometryModel.Geometry as MeshGeometry3D).TriangleIndices.Add((geometryModel.Geometry as MeshGeometry3D).Positions.Count - 1);
             }
+        }
+
+        private void ExtractVertexIndexAndAddToExistingMesh(Point3D pointToAdd, GeometryModel3D geometryModel)
+        {
+            ExtractVertexIndexAndAddToExistingMesh(new Point3DClassType(pointToAdd.X, pointToAdd.Y, pointToAdd.Z), geometryModel);
         }
 
         private void HelixViewport3D_MouseMove(object sender, MouseEventArgs e)
@@ -349,6 +362,53 @@ namespace MyFirstHelixToolkitAppToPlayAround
             {
                 modelUI.ActiveModel3D = modelUI.GeometryModel3DHit;
             }
+        }
+
+        private void TryImportFromInpButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists(modelUI.InputFilePath))
+            {
+                MessageBox.Show("File does not exists");
+                return;
+            }
+            AbaqusInpFileParser inpFileParser = new AbaqusInpFileParser(modelUI.InputFilePath);
+            
+            foreach (Assembly assembly in inpFileParser.Assemblies)
+            {
+                foreach (AssemblyInstance assemblyInstance in assembly.Instances)
+                {
+                    Model3DGroup modelgroupRef = (modelVisual3dRef.Content as Model3DGroup);
+
+                    if (modelgroupRef != null)
+                    {
+                        GeometryModel3D geometryModel = new GeometryModel3D();
+                        geometryModel.SetName(assemblyInstance.InstanceName);
+                        geometryModel.Material = geometryModel3dRef.Material;
+                        modelgroupRef.Children.Add(geometryModel);
+
+                        //Parallel.ForEach(part.Triangles, triangle => {
+
+                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item1, geometryModel);
+                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item2, geometryModel);
+                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item3, geometryModel);
+                        //});
+
+                        Part partToIterate = inpFileParser.Parts.Where(s => s.PartName == assemblyInstance.PartName).First();
+
+                        foreach (Tuple<Point3D, Point3D, Point3D> triangle in partToIterate.Triangles)
+                        {
+                            ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item1.X + assemblyInstance.XOffset, triangle.Item1.Y + assemblyInstance.YOffset, triangle.Item1.Z + assemblyInstance.ZOffset), geometryModel);
+                            ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item2.X + assemblyInstance.XOffset, triangle.Item2.Y + assemblyInstance.YOffset, triangle.Item2.Z + assemblyInstance.ZOffset), geometryModel);
+                            ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item3.X + assemblyInstance.XOffset, triangle.Item3.Y + assemblyInstance.YOffset, triangle.Item3.Z + assemblyInstance.ZOffset), geometryModel);
+                        }
+
+
+                    }
+                }
+                
+            }
+
+            MessageBox.Show("Operation completed successfully");
         }
     }
 }

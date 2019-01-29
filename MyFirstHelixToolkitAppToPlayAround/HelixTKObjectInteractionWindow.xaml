@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyFirstHelixToolkitAppToPlayAround"
         xmlns:HelixToolKit="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="HelixTKObjectInteractionWindow" Height="600" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="HelixTKObjectInteractionWindow" Height="800" Width="900" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
@@ -124,6 +124,12 @@
 
             <StackPanel>
                 <Button Name="ComputationButton" Click="ComputationButton_Click">Just compute</Button>
+                
+            </StackPanel>
+
+            <StackPanel>
+                <TextBox Width="200" Margin="10" Text="{Binding Path= InputFilePath , Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" Name="TextBoxInputFilePath"></TextBox>
+                <Button Name="TryImportFromInpButton" Click="TryImportFromInpButton_Click" >Try Importing from Inp File</Button>
             </StackPanel>
 
         </StackPanel>
