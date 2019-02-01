@@ -26,6 +26,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
 
                     bool nodeStarted = false;
                     bool elementStarted = false;
+                    string elementType = "";
                     Part currentPart = null;
                     Assembly currentAssembly = null;
 
@@ -56,7 +57,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
                                     }
 
                                     int elementId = Convert.ToInt32(delimitedString[0]);
-                                    Element newElement = new Element(elementId);
+                                    Element newElement = new Element(elementId, elementType);
 
                                     for (int i = 1; i < delimitedString.Length; i++)
                                     {
@@ -75,10 +76,12 @@ namespace MyFirstHelixToolkitAppToPlayAround
                                 {
                                     nodeStarted = false;
                                     elementStarted = true;
+                                    elementType = line.Split(',').Select(s => s.Trim()).Where(s => s.StartsWith("type=")).First().Split('=').Last();
                                 }
                                 else if (line.StartsWith("*Node"))
                                 {
                                     elementStarted = false;
+                                    elementType = string.Empty;
                                     nodeStarted = true;
                                 }
                                 else if (line.StartsWith("*End Part"))
@@ -86,11 +89,13 @@ namespace MyFirstHelixToolkitAppToPlayAround
                                     currentPart = null;
                                     nodeStarted = false;
                                     elementStarted = false;
+                                    elementType = string.Empty;
                                 }
                                 else
                                 {
                                     nodeStarted = false;
                                     elementStarted = false;
+                                    elementType = string.Empty;
                                 }
                             }
                         }
@@ -153,6 +158,13 @@ namespace MyFirstHelixToolkitAppToPlayAround
                             listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord)));
                             listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord)));
                         }
+                        else if (element.ElementType == "C3D10M")
+                        {
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord)));
+                        }
                     }
                     part.Triangles = listOfTriangles;
                 }
@@ -170,6 +182,13 @@ namespace MyFirstHelixToolkitAppToPlayAround
                         {
                             listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord)));
                             listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord)));
+                        }
+                        else if(element.ElementType == "C3D10M")
+                        {
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord), new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[2].XCoord, element.Nodes[2].YCoord, element.Nodes[2].ZCoord), new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord)));
+                            listOfTriangles.Add(new Tuple<Point3D, Point3D, Point3D>(new Point3D(element.Nodes[3].XCoord, element.Nodes[3].YCoord, element.Nodes[3].ZCoord), new Point3D(element.Nodes[0].XCoord, element.Nodes[0].YCoord, element.Nodes[0].ZCoord), new Point3D(element.Nodes[1].XCoord, element.Nodes[1].YCoord, element.Nodes[1].ZCoord)));
                         }
                     }
                 }
@@ -250,11 +269,13 @@ namespace MyFirstHelixToolkitAppToPlayAround
         public class Element
         {
             int _ElementNum;
+            public string ElementType { get; private set; }
             List<Node> _Nodes = new List<Node>();
 
-            public Element(int elementNum)
+            public Element(int elementNum, string elementType)
             {
                 _ElementNum = elementNum;
+                ElementType = elementType;
             }
 
             public List<Node> Nodes { get => _Nodes; private set => _Nodes = value; }

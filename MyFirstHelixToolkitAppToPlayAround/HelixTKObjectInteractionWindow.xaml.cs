@@ -385,15 +385,17 @@ namespace MyFirstHelixToolkitAppToPlayAround
                         geometryModel.SetName(assemblyInstance.InstanceName);
                         geometryModel.Material = geometryModel3dRef.Material;
                         modelgroupRef.Children.Add(geometryModel);
-
-                        //Parallel.ForEach(part.Triangles, triangle => {
-
-                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item1, geometryModel);
-                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item2, geometryModel);
-                        //    ExtractVertexIndexAndAddToExistingMesh(triangle.Item3, geometryModel);
-                        //});
-
+                        
                         Part partToIterate = inpFileParser.Parts.Where(s => s.PartName == assemblyInstance.PartName).First();
+
+                        //Parallel.ForEach(partToIterate.Triangles, triangle => {
+                        //    lock (_threadLockObject)
+                        //    {
+                        //        ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item1.X + assemblyInstance.XOffset, triangle.Item1.Y + assemblyInstance.YOffset, triangle.Item1.Z + assemblyInstance.ZOffset), geometryModel);
+                        //        ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item2.X + assemblyInstance.XOffset, triangle.Item2.Y + assemblyInstance.YOffset, triangle.Item2.Z + assemblyInstance.ZOffset), geometryModel);
+                        //        ExtractVertexIndexAndAddToExistingMesh(new Point3D(triangle.Item3.X + assemblyInstance.XOffset, triangle.Item3.Y + assemblyInstance.YOffset, triangle.Item3.Z + assemblyInstance.ZOffset), geometryModel);
+                        //    }
+                        //});
 
                         foreach (Tuple<Point3D, Point3D, Point3D> triangle in partToIterate.Triangles)
                         {
@@ -407,7 +409,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
                 }
                 
             }
-
+            
             MessageBox.Show("Operation completed successfully");
         }
     }
