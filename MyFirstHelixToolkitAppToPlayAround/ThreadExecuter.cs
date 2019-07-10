@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Media;
 
 namespace MyFirstHelixToolkitAppToPlayAround
 {
@@ -9,16 +10,23 @@ namespace MyFirstHelixToolkitAppToPlayAround
         private Thread _parameterizedThread;
         private void parameterlessRun()
         {
-            double value = 0.0;
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread started"));
-            while(value <= 100)
+            try
             {
-                value += 1;
-                Thread.Sleep(100);
-                ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread running"));
-            }
+                double value = 0.0;
+                ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread started", Colors.DarkGray));
+                while (value <= 100)
+                {
+                    value += 1;
+                    Thread.Sleep(100);
+                    ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread running", Colors.Orange));
+                }
 
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread ended"));
+                ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterless thread ended", Colors.Green));
+            }
+            catch (Exception ex)
+            {
+                Thread.ResetAbort();
+            }
         }
 
         public event EventHandler<ThreadProgressReportEventArgs> ThreadProgressReportEvent;
@@ -31,15 +39,15 @@ namespace MyFirstHelixToolkitAppToPlayAround
         private void parameterizedRun(object obj)
         {
             double value = 0.0;
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread started with parameter : " + obj.ToString()));
+            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread started with parameter : " + obj.ToString(), Colors.Green));
             while (value <= 100)
             {
                 value += 1;
                 Thread.Sleep(100);
-                ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread running with parameter : " + obj.ToString()));
+                ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread running with parameter : " + obj.ToString(), Colors.YellowGreen));
             }
 
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread ended"));
+            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(value, "Parameterized thread ended", Colors.Green));
         }
 
         internal void ParameterlessThreadStart()
@@ -51,7 +59,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
         {
             _parameterlessThread.Abort();
             //_parameterlessThread.Join();
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(0, "Parameterless thread abort successful from ThreadExecuter"));
+            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(0, "Parameterless thread abort successful from ThreadExecuter", Colors.Red));
         }
 
         internal void ParameterizedThreadAbort()
@@ -72,7 +80,7 @@ namespace MyFirstHelixToolkitAppToPlayAround
         internal void ParameterlessThreadInterrupt()
         {
             _parameterlessThread.Interrupt();
-            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(0, "Parameterless thread interrupt successful from ThreadExecuter"));
+            ThreadProgressReportEvent?.Invoke(this, new ThreadProgressReportEventArgs(0, "Parameterless thread interrupt successful from ThreadExecuter", Colors.Yellow));
         }
     }
 
@@ -80,14 +88,17 @@ namespace MyFirstHelixToolkitAppToPlayAround
     {
         private double _ProgressValue;
         private string _Message;
+        private Color _Color;
 
-        public ThreadProgressReportEventArgs(double progressValue, string message)
+        public ThreadProgressReportEventArgs(double progressValue, string message, System.Windows.Media.Color color)
         {
             _ProgressValue = progressValue;
             _Message = message;
+            _Color = color;
         }
 
         public double ProgressValue { get => _ProgressValue; }
         public string Message { get => _Message; }
+        public Color Color { get => _Color; }
     }
 }
