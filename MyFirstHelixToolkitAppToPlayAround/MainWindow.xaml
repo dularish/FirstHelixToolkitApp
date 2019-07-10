@@ -9,19 +9,21 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock>Welcome to my first application</TextBlock>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
             <Button x:Name="ModelsView" Margin="10" Click="Button_Click" >Click to navigate to 3D Viewer</Button>
 
             <Button x:Name="ChartsView" Margin="10" Click="ChartsView_Click" >Click to navigate to Charts Viewer</Button>
+
+            <Button x:Name="ThreadingExp" Margin="10" Click="ThreadingExp_Click" >Click to navigate to Threading experiment Viewer</Button>
         </StackPanel>
         
     </Grid>

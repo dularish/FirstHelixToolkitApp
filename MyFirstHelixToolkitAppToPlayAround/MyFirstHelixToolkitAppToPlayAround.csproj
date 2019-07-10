@@ -91,6 +91,10 @@
     <Compile Include="SurfacePlot\SurfacePlotWindow.xaml.cs">
       <DependentUpon>SurfacePlotWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ThreadExecuter.cs" />
+    <Compile Include="ThreadingExpWindow.xaml.cs">
+      <DependentUpon>ThreadingExpWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="AddTriangleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SurfacePlot\SurfacePlotWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThreadingExpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

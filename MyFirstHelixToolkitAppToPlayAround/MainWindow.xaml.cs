@@ -38,5 +38,12 @@ namespace MyFirstHelixToolkitAppToPlayAround
             this.Close();
             chartsDisplayWindow.Show();
         }
+
+        private void ThreadingExp_Click(object sender, RoutedEventArgs e)
+        {
+            ThreadingExpWindow threadingExpWindow = new ThreadingExpWindow();
+            this.Close();
+            threadingExpWindow.Show();
+        }
     }
 }
