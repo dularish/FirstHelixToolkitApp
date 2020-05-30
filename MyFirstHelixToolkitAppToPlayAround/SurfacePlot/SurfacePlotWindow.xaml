@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyFirstHelixToolkitAppToPlayAround.SurfacePlot"
+        xmlns:htk="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         Title="SurfacePlotWindow" Height="450" Width="800">
     <Grid>
-        
+        <htk:HelixViewport3D
+            ShowViewCube="False" 
+            ShowCoordinateSystem="True"
+            >
+            <htk:SunLight />
+            <ModelVisual3D />
+            <local:SurfacePlotVisual3D />
+            <htk:GridLinesVisual3D x:Name="_yzGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="1,0,0"  Center="0,5,5"  />
+            <htk:GridLinesVisual3D x:Name="_xzGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="0,1,0"  Center="5,0,5"  />
+            <htk:GridLinesVisual3D x:Name="_xyGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="0,0,1" Center="5,5,0"  />
+        </htk:HelixViewport3D>
     </Grid>
 </Window>

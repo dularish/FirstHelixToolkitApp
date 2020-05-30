@@ -45,5 +45,12 @@ namespace MyFirstHelixToolkitAppToPlayAround
             this.Close();
             threadingExpWindow.Show();
         }
+
+        private void surfacePlotNavigationBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SurfacePlot.SurfacePlotWindow surfacePlotWindow = new SurfacePlot.SurfacePlotWindow();
+            Close();
+            surfacePlotWindow.Show();
+        }
     }
 }

@@ -88,6 +88,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="SurfacePlot\SurfacePlotViewModel.cs" />
+    <Compile Include="SurfacePlot\SurfacePlotVisual3D.cs" />
     <Compile Include="SurfacePlot\SurfacePlotWindow.xaml.cs">
       <DependentUpon>SurfacePlotWindow.xaml</DependentUpon>
     </Compile>
