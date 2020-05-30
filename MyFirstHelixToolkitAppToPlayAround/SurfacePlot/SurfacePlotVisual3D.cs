@@ -23,8 +23,8 @@ namespace MyFirstHelixToolkitAppToPlayAround.SurfacePlot
                 {
                     for (int j = -n; j < n; j++)
                     {
-                        double x = i / ((double)n) * 10.0;
-                        double y = j / ((double)n) * 10.0;
+                        double x = i / ((double)n) * Math.PI;
+                        double y = j / ((double)n) * Math.PI;
                         double z = Math.Pow(x, 2.0) - Math.Pow(y, 2.0);
                         //10 * (Math.Sin(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)))) / Math.Sqrt(Math.Pow(x,2) + Math.Pow(y,2));//Sin curve
                         //0.5 * Math.Sin(x*y);//Ripple like
