@@ -5,16 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyFirstHelixToolkitAppToPlayAround.SurfacePlot"
         xmlns:htk="http://helix-toolkit.org/wpf"
+        d:DataContext="{d:DesignInstance local:SurfacePlotViewModel}"
         mc:Ignorable="d"
         Title="SurfacePlotWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisConverter" />
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2">
+            <GroupBox Header="FunctionPlot">
+                <GroupBox.Content>
+                    <WrapPanel>
+                        <RadioButton x:Name="_preDefFuncsChkBox" Content="Predefined functions" GroupName="PlotMethod" />
+                        <RadioButton x:Name="_customFuncChkBox" Content="Custom function" GroupName="PlotMethod" />
+                    </WrapPanel>
+                </GroupBox.Content>
+            </GroupBox>
+            <StackPanel Visibility="{Binding ElementName=_preDefFuncsChkBox,Path=IsChecked, Converter={StaticResource boolToVisConverter}}">
+                <TextBlock Text="Predefined function : " />
+                <ComboBox x:Name="_funcTypeCmbBox" ItemsSource="{Binding FunctionTypesList}" SelectionChanged="_funcTypeCmbBox_SelectionChanged" />
+            </StackPanel>
+            <StackPanel>
+                <WrapPanel Margin="5">
+                    <TextBox x:Name="xMinBox" Text="{Binding MinX}" Width="70" />
+                    <TextBlock Text="&lt; x &lt;" TextAlignment="Center" Width="50" />
+                    <TextBox x:Name="xMaxBox" Text="{Binding MaxX}" Width="70" />
+                </WrapPanel>
+                <WrapPanel Margin="5">
+                    <TextBlock Text="Number of points along X axis : " />
+                    <TextBox x:Name="xPoints" Text="{Binding XPoints}" Width="70" />
+                </WrapPanel>
+                <WrapPanel Margin="5">
+                    <TextBox x:Name="yMinBox" Text="{Binding MinY}" Width="70" />
+                    <TextBlock Text="&lt; y &lt;" TextAlignment="Center" Width="50" />
+                    <TextBox x:Name="yMaxBox" Text="{Binding MaxY}" Width="70"  />
+                </WrapPanel>
+                <WrapPanel Margin="5">
+                    <TextBlock Text="Number of points along Y axis : " />
+                    <TextBox x:Name="yPoints" Text="{Binding YPoints}" Width="70" />
+                </WrapPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="_plotCurveBtn" Content="Plot curve" Click="_plotCurveBtn_Click" />
+        </StackPanel>
         <htk:HelixViewport3D
             ShowViewCube="False" 
             ShowCoordinateSystem="True"
+            Grid.Row="0" Grid.RowSpan="3"
+            Grid.Column="2" BorderThickness="3" BorderBrush="Black"
             >
             <htk:SunLight />
             <ModelVisual3D />
-            <local:SurfacePlotVisual3D />
+            <local:SurfacePlotVisual3D PlotPoints="{Binding PlotPoints, Mode=TwoWay}" />
             <htk:GridLinesVisual3D x:Name="_yzGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="1,0,0"  Center="0,5,5"  />
             <htk:GridLinesVisual3D x:Name="_xzGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="0,1,0"  Center="5,0,5"  />
             <htk:GridLinesVisual3D x:Name="_xyGrid" Thickness="0.01" Width="10" Length="10" MinorDistance="1" MajorDistance="1" Normal="0,0,1" Center="5,5,0"  />

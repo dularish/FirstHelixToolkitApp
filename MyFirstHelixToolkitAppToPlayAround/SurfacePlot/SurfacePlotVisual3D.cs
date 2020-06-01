@@ -72,7 +72,7 @@ namespace MyFirstHelixToolkitAppToPlayAround.SurfacePlot
         private void UpdatePlot()
         {
             Children.Clear();
-
+            
             Content = CreatePlot();
         }
 
