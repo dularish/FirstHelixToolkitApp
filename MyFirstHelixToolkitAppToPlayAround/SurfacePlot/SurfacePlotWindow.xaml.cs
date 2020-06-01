@@ -36,7 +36,7 @@ namespace MyFirstHelixToolkitAppToPlayAround.SurfacePlot
 
         private void _plotCurveBtn_Click(object sender, RoutedEventArgs e)
         {
-            _dataContext.ResetPoints(_preDefFuncsChkBox.IsChecked);
+            _dataContext.ResetPoints();
         }
     }
 }
